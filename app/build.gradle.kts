@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -22,6 +24,12 @@ android {
         viewBinding = true
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+
 
     buildTypes {
         release {
@@ -42,7 +50,14 @@ android {
 }
 
 dependencies {
-    implementation ("androidx.databinding:databinding-runtime:8.3.1")
+    implementation ("com.google.android.material:material:1.3.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.github.terrakok:cicerone:6.6")
+    implementation("com.github.moxy-community:moxy:2.2.2")
+    kapt("com.github.moxy-community:moxy-compiler:2.2.2")
+    implementation("com.github.moxy-community:moxy-ktx:2.2.2")
+    implementation("com.github.moxy-community:moxy-androidx:2.2.2")
+    implementation("androidx.databinding:databinding-runtime:8.3.1")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")

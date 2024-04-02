@@ -15,5 +15,4 @@ class Model {
     fun set(index:Int,value:Int){
         counters[index]=value
     }
-
 }
