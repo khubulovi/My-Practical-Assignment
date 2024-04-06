@@ -50,7 +50,9 @@ android {
 }
 
 dependencies {
-    implementation ("com.google.android.material:material:1.3.0")
+    implementation ("io.reactivex.rxjava3:rxandroid:3.0.0")
+    implementation ("io.reactivex.rxjava3:rxjava:3.0.0")
+    implementation ("com.google.android.material:material:1.11.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.github.terrakok:cicerone:6.6")
     implementation("com.github.moxy-community:moxy:2.2.2")
