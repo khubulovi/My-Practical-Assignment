@@ -1,5 +1,6 @@
 package com.example.myapplication.data.user
 
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
 
 class GitHubUserRepositoryImpl : GitHubUserRepository {
@@ -13,7 +14,10 @@ class GitHubUserRepositoryImpl : GitHubUserRepository {
 
     override fun getUsers(): Single<List<GitHubUser>> =
         Single.just(users)
+            .map { users -> users.map {it.copy(login = it.login.lowercase())} }
 
-    override fun getUsersByLogin(userId: String): GitHubUser? =
-        users.firstOrNull { user -> user.login == userId }
+    override fun getUsersByLogin(userId: String): Maybe<GitHubUser> =
+        users.firstOrNull { user -> user.login.contentEquals(userId,ignoreCase = true) }
+            ?.let { user -> Maybe.just(user)}
+            ?: Maybe.empty()
 }

@@ -5,11 +5,10 @@ import android.os.Bundle
 import com.example.myapplication.PopularLabraries.Navigation.navigationHolder
 import com.example.myapplication.PopularLabraries.Navigation.router
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.R
 import com.example.myapplication.presentation.navigation.CustomNavigator
 import com.example.myapplication.presentation.users.UsersScreen
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
     private val navigator = CustomNavigator(activity = this, android.R.id.content)
 
     override fun onResumeFragments() {
