@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentFactory
 import com.example.myapplication.presentation.user.CustomFragmentScreen
 import com.github.terrakok.cicerone.Screen
 
-class UsersScreen: CustomFragmentScreen, Screen {
+class UsersScreen: CustomFragmentScreen {
     override fun createCustomFragment(factory: FragmentFactory): Fragment =
         UsersFragment.newInstance()
 }

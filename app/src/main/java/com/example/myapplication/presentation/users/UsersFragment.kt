@@ -8,8 +8,8 @@ import com.example.myapplication.arguments
 import com.example.myapplication.data.user.GitHubUser
 import com.example.myapplication.data.user.GitHubUserRepositoryFactory
 import com.example.myapplication.databinding.FragmentUsersBinding
-import com.example.myapplication.presentation.navigation.CustomRouter
 import com.example.myapplication.presentation.users.adapter.UsersAdapter
+import com.github.terrakok.cicerone.Router
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -22,7 +22,7 @@ class UsersFragment : MvpAppCompatFragment(R.layout.fragment_users), UsersView,
     private val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(
             userRepository = GitHubUserRepositoryFactory.create(),
-            router = CustomRouter()
+            router = Router()
         )
     }
 

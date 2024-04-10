@@ -3,14 +3,14 @@ package com.example.myapplication.presentation.users
 import android.annotation.SuppressLint
 import com.example.myapplication.data.user.GitHubUser
 import com.example.myapplication.data.user.GitHubUserRepository
-import com.example.myapplication.presentation.navigation.CustomRouter
 import com.example.myapplication.presentation.user.UserScreen
+import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
 
 class UsersPresenter(
     private val userRepository: GitHubUserRepository,
-    private val router: CustomRouter
+    private val router: Router
 ) : MvpPresenter<UsersView>() {
 
     private val disposable = CompositeDisposable()

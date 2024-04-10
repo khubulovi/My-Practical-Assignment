@@ -6,7 +6,7 @@ import com.github.terrakok.cicerone.Screen
 
 
 class UserScreen(private val userLogin: String
-) : CustomFragmentScreen,Screen {
+) : CustomFragmentScreen {
     override fun createCustomFragment(factory: FragmentFactory): Fragment =
         UserFragment.newInstanse(userLogin)
 }
