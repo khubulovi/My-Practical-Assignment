@@ -2,11 +2,11 @@ package com.example.myapplication.presentation
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
-import com.example.myapplication.PopularLabraries.Navigation.navigationHolder
+import com.example.myapplication.PopularLabraries.Navigation.navigatorHolder
 import com.example.myapplication.PopularLabraries.Navigation.router
 import com.example.myapplication.data.network.NetworkState
 import com.example.myapplication.data.network.NetworkStateObservable
-import com.example.myapplication.presentation.conventer.ConverterScreen
+import com.example.myapplication.presentation.users.UsersScreen
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -18,13 +18,16 @@ class MainActivity : MvpAppCompatActivity() {
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        navigationHolder.setNavigator(navigator)
+        navigatorHolder
+            .setNavigator(navigator)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        savedInstanceState ?: router.newRootScreen(ConverterScreen)
-
+        if (savedInstanceState == null) {
+            router.newRootScreen(UsersScreen.newInstanse())
+            router.openDeepLink(intent?.data)
+        }
         val connect =
             NetworkStateObservable(this)
                 .doOnNext { onNext(this, 0, it) }
@@ -45,7 +48,7 @@ class MainActivity : MvpAppCompatActivity() {
     }
 
     override fun onPause() {
-        navigationHolder.removeNavigator()
+        navigatorHolder.removeNavigator()
         super.onPause()
     }
 

@@ -8,4 +8,9 @@ import com.github.terrakok.cicerone.Screen
 class UsersScreen: CustomFragmentScreen {
     override fun createCustomFragment(factory: FragmentFactory): Fragment =
         UsersFragment.newInstance()
+
+
+    companion object {
+        fun newInstanse(): Screen = UsersScreen()
+    }
 }
