@@ -12,7 +12,7 @@ class OpenDeepLink(private val deepLink: Uri?) :CustomRouter.Command,Command{
                 deepLink
                     .let(Uri::getLastPathSegment)
                     ?.let(::UserScreen)
-                    ?.let { Forward(it,true) }
+                    ?.let { Forward(it) }
                     ?.let(navigation::applyCommand)
             else -> Unit
         }
