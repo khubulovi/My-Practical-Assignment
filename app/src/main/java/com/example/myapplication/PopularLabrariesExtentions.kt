@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -22,12 +20,11 @@ fun Fragment.arguments(vararg arguments: Pair<String, Any>): Fragment {
 }
 
 @SuppressLint("CheckResult")
-fun TextView.setUserAvatar(uri: String, placeholder: Int) {
-    val glidUri = if (uri.isEmpty()) placeholder else GlideUrl(uri)
+fun TextView.setUserAvatar(uri: String) {
+    val glidUri =  GlideUrl(uri)
 
     Glide.with(context)
         .load(glidUri)
-        .placeholder(placeholder)
         .apply(
             RequestOptions
                 .circleCropTransform()
@@ -52,8 +49,4 @@ fun TextView.setUserAvatar(uri: String, placeholder: Int) {
                 )
             }
         })
-}
-
-fun TextView.setTextColorCompat(@ColorRes color: Int) {
-    setTextColor(ContextCompat.getColor(context, color))
 }

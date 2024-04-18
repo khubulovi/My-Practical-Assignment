@@ -7,5 +7,5 @@ import io.reactivex.rxjava3.core.Observable
 interface GitHubRepositoryCacheDataSourse {
 
     fun getUserRepository(login : String) : Observable<List<GitHubRepository>>
-    fun retain(repository: List<GitHubRepository>) : Completable
+    fun retain(repository: List<String?>) : Completable
 }

@@ -1,10 +1,12 @@
 package com.example.myapplication.data.user
 
-import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.core.Single
+import com.example.myapplication.data.repository.GitHubRepository
+import io.reactivex.rxjava3.core.Observable
 
 interface GitHubUserRepository {
-    fun getUsers(): Single<List<GitHubUser>>
+    fun getUsers(): Observable<List<GitHubUser>>
 
-    fun getUsersByLogin(userId: String): Maybe<GitHubUser>
+    fun getUsersByLogin(userId: String): Observable<GitHubUser>
+
+    fun getUserRepository(login : String) : Observable<List<GitHubRepository>>
 }

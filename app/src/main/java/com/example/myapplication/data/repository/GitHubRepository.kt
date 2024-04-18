@@ -12,4 +12,7 @@ class GitHubRepository(
     val login: String,
     @SerializedName("name")
     val name: String
-)
+) {
+    fun copy(login: String) =
+        login
+}

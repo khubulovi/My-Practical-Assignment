@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
+import androidx.room.Update
 import com.example.myapplication.data.user.GitHubUser
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -20,7 +21,7 @@ interface GitHubUserDao {
     @Insert(onConflict = REPLACE)
     fun retain(users: List<GitHubUser>): Completable
 
-    @Insert(onConflict = REPLACE)
+    @Update(onConflict = REPLACE)
     fun retain(user: GitHubUser): Completable
 
 }

@@ -1,5 +1,6 @@
 package com.example.myapplication.data.api
 
+import com.example.myapplication.data.user.GitHubDeserializer
 import com.example.myapplication.data.user.GitHubUser
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

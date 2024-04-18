@@ -1,23 +1,67 @@
 package com.example.myapplication.data.user
 
-import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.core.Single
+import com.example.myapplication.data.repository.GitHubRepository
+import com.example.myapplication.data.repository.datasourse.GitHubRepositoryCacheDataSourse
+import com.example.myapplication.data.repository.datasourse.GitHubRepositoryDataSourse
+import com.example.myapplication.data.user.datasourse.GitHubUserCacheDataSourse
+import com.example.myapplication.data.user.datasourse.GitHubUserDataSourse
+import io.reactivex.rxjava3.core.Observable
 
-class GitHubUserRepositoryImpl : GitHubUserRepository {
-    private val users = listOf(
-        GitHubUser("login1"),
-        GitHubUser("login2"),
-        GitHubUser("login3"),
-        GitHubUser("login4"),
-        GitHubUser("login5"),
-    )
+class GitHubUserRepositoryImpl(
+    private val gitHubUserDataSource: GitHubUserDataSourse,
+    private val gitHubUserCacheDataSource: GitHubUserCacheDataSourse,
+    private val gitHubRepositoryDataSource: GitHubRepositoryDataSourse,
+    private val gitHubRepositoryCacheDataSource: GitHubRepositoryCacheDataSourse,
+) : GitHubUserRepository {
 
-    override fun getUsers(): Single<List<GitHubUser>> =
-        Single.just(users)
-            .map { users -> users.map {it.copy(login = it.login.lowercase())} }
 
-    override fun getUsersByLogin(userId: String): Maybe<GitHubUser> =
-        users.firstOrNull { user -> user.login.contentEquals(userId,ignoreCase = true) }
-            ?.let { user -> Maybe.just(user)}
-            ?: Maybe.empty()
+    override fun getUsers(): Observable<List<GitHubUser>> =
+        Observable
+            .merge(
+                gitHubUserCacheDataSource
+                    .getUsers(),
+                gitHubUserDataSource
+                    .getUsers()
+                    .flatMapObservable(gitHubUserCacheDataSource::retain)
+            )
+
+    override fun getUsersByLogin(userId: String): Observable<GitHubUser> =
+        Observable.merge(
+            gitHubUserCacheDataSource
+                .getUserByLogin(userId),
+            gitHubUserDataSource
+                .getUserByLogin(userId)
+                .flatMapCompletable { user ->
+                    gitHubUserCacheDataSource
+                        .retain(user)
+                        .flatMapCompletable {
+                            gitHubRepositoryDataSource
+                                .getUserRepository(user.login)
+                                .map { repositories ->
+                                    repositories.map { repository ->
+                                        repository.copy(
+                                            login = user.login
+                                        )
+                                    }
+                                }
+                                .flatMapCompletable { repository ->
+                                    gitHubRepositoryCacheDataSource.retain(repository)
+                                }
+                        }
+                }
+                .toObservable()
+        )
+
+
+    override fun getUserRepository(login: String): Observable<List<GitHubRepository>> =
+        Observable.merge(
+            gitHubRepositoryCacheDataSource
+                .getUserRepository(login),
+            gitHubRepositoryDataSource
+                .getUserRepository(login)
+                .map { repositories -> repositories.map { repository -> repository.copy(login = login) } }
+                .flatMapCompletable(gitHubRepositoryCacheDataSource::retain)
+                .toObservable()
+        )
+
 }

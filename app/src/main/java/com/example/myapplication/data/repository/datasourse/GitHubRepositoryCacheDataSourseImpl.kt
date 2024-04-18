@@ -13,7 +13,7 @@ class GitHubRepositoryCacheDataSourseImpl(
             .getGitHubRepositoryDao()
             .getRepositoriesByLogin(login)
 
-    override fun retain(repository: List<GitHubRepository>): Completable =
+    override fun retain(repository: List<String?>): Completable =
         gitHubStorage
             .getGitHubRepositoryDao()
             .retain(repository)

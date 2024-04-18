@@ -1,18 +1,23 @@
 package com.example.myapplication.presentation.user
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.arguments
+import com.example.myapplication.data.repository.GitHubRepository
 import com.example.myapplication.data.user.GitHubUserRepositoryFactory
-import com.example.myapplication.databinding.FragmentUserBinding
+import com.example.myapplication.databinding.FragmentUserDetailsBinding
 import com.example.myapplication.presentation.GitHubUserViewModel
+import com.example.myapplication.presentation.user.adapter.GitHubRepositoryAdapter
+import com.example.myapplication.setUserAvatar
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class UserFragment : MvpAppCompatFragment(R.layout.fragment_user), UserView {
-    private val _binding: FragmentUserBinding? = null
-    private val binding = _binding!!
+class UserFragment : MvpAppCompatFragment(R.layout.fragment_user_details), UserView {
+    private val binding: FragmentUserDetailsBinding by viewBinding()
+    private val adapter = GitHubRepositoryAdapter()
     private val userLogin: String by lazy {
         arguments?.getString(ARG_USER_LOGIN).orEmpty()
     }
@@ -31,8 +36,18 @@ class UserFragment : MvpAppCompatFragment(R.layout.fragment_user), UserView {
                 .arguments(ARG_USER_LOGIN to userId)
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun showUser(user: GitHubUserViewModel) {
-        binding.user.text=user.login
+        binding.apply {
+            this.user.setUserAvatar(user.avatar)
+            this.user.setTextColor(user.nameColor)
+            this.user.text=user.name
+        }
+    }
+
+    override fun showRepository(repository: List<GitHubRepository>) {
+        binding.userRepositories.adapter=adapter
+        adapter.submitList(repository)
     }
 
     override fun showError(throwable: Throwable) {

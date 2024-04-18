@@ -3,6 +3,7 @@ package com.example.myapplication.presentation.users
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.R
 import com.example.myapplication.arguments
 import com.example.myapplication.data.user.GitHubUser
@@ -17,8 +18,7 @@ import moxy.ktx.moxyPresenter
 class UsersFragment : MvpAppCompatFragment(R.layout.fragment_users), UsersView,
     UsersAdapter.Delegate {
 
-    private val _binding: FragmentUsersBinding? = null
-    private val binding = _binding!!
+    private val binding: FragmentUsersBinding by viewBinding()
     private val usersAdapter = UsersAdapter(delagate = this)
     private val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(
