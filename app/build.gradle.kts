@@ -57,6 +57,13 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.dagger:dagger:2.38.1")
+    implementation( "com.google.dagger:dagger-android:2.38.1")
+    implementation ("com.google.dagger:dagger-android-support:2.38.1")
+
+    kapt ("com.google.dagger:dagger-compiler:2.38.1")
+    kapt ("com.google.dagger:dagger-android-processor:2.38.1")
+
     implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
 
     implementation ("com.google.android.material:material:1.11.0")
