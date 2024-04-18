@@ -37,15 +37,8 @@ class GitHubUserRepositoryImpl(
                         .flatMapCompletable {
                             gitHubRepositoryDataSource
                                 .getUserRepository(user.login)
-                                .map { repositories ->
-                                    repositories.map { repository ->
-                                        repository.copy(
-                                            login = user.login
-                                        )
-                                    }
-                                }
-                                .flatMapCompletable { repository ->
-                                    gitHubRepositoryCacheDataSource.retain(repository)
+                                .flatMapCompletable { repositories ->
+                                    gitHubRepositoryCacheDataSource.retain(repositories)
                                 }
                         }
                 }
@@ -55,13 +48,11 @@ class GitHubUserRepositoryImpl(
 
     override fun getUserRepository(login: String): Observable<List<GitHubRepository>> =
         Observable.merge(
-            gitHubRepositoryCacheDataSource
-                .getUserRepository(login),
-            gitHubRepositoryDataSource
-                .getUserRepository(login)
-                .map { repositories -> repositories.map { repository -> repository.copy(login = login) } }
-                .flatMapCompletable(gitHubRepositoryCacheDataSource::retain)
+            gitHubRepositoryCacheDataSource.getUserRepository(login),
+            gitHubRepositoryDataSource.getUserRepository(login)
+                .flatMapCompletable { repositories ->
+                    gitHubRepositoryCacheDataSource.retain(repositories)
+                }
                 .toObservable()
         )
-
 }

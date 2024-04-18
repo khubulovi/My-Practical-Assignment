@@ -15,6 +15,6 @@ interface GitHubRepositoryDao {
     fun getRepositoriesByLogin(login: String): Observable<List<GitHubRepository>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun retain(users: List<String?>): Completable
+    fun retain(users: List<GitHubRepository>): Completable
 
 }
